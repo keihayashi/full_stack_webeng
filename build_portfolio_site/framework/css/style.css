@@ -1,0 +1,63 @@
+/** {
+    border: 1px solid red !important;
+}*/
+
+[class*="zocial-"]:before {
+  color: black;
+  display: inline-block;
+  font-family: 'zocial', sans-serif;
+  text-shadow: 3px 3px 3px #aaa;
+  width: 2em;
+}
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+
+}
+
+.header {
+    background-position: center;
+    background-size: auto;
+    height: 400px
+}
+
+.face__img {
+    height: 300px;
+}
+
+
+/*@media screen and (min-width: 46.8em) {
+    .container {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+}*/
+
+.content {
+    margin-top: 5em;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 100;
+    letter-spacing: -1px;
+}
+
+@media only wedding and (max-width: 500px) {
+    p {
+        display: none;
+    }
+}
+
+* {
+    font-family: 'Lora', sans-serif;
+}
+
+.picture {
+    flex: horizontal;
+    /*flex-wrap: wrap;*/
+}
+
