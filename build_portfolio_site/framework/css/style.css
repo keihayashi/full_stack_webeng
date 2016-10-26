@@ -5,7 +5,7 @@
 [class*="zocial-"]:before {
   color: black;
   display: inline-block;
-  font-family: 'zocial', sans-serif;
+  font-family: "zocial", sans-serif;
   text-shadow: 3px 3px 3px #aaa;
   width: 2em;
 }
@@ -15,29 +15,7 @@
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
     box-sizing: border-box;
-
-}
-
-.header {
-    background-position: center;
-    background-size: auto;
-    height: 400px
-}
-
-.face__img {
-    height: 300px;
-}
-
-
-/*@media screen and (min-width: 46.8em) {
-    .container {
-        padding-left: 10%;
-        padding-right: 10%;
-    }
-}*/
-
-.content {
-    margin-top: 5em;
+    font-family: 'Lora', sans-serif;
 }
 
 h1 {
@@ -46,18 +24,46 @@ h1 {
     letter-spacing: -1px;
 }
 
-@media only wedding and (max-width: 500px) {
-    p {
-        display: none;
+@media screen and (max-width: 800px) {
+    .container {
+        margin-right: 5px;
+        margin-left: 5px;
     }
 }
 
-* {
-    font-family: 'Lora', sans-serif;
+.header {
+    background-position: center;
+    background-size: auto;
+    height: 400px
 }
 
 .picture {
     flex: horizontal;
-    /*flex-wrap: wrap;*/
 }
+
+.face__img {
+    height: 300px;
+}
+
+.content {
+    margin-top: 5em;
+}
+
+.exp__img {
+    max-width: 10%;
+    height: auto;
+    display:block;
+}
+
+@media screen and (min-width: 500px) {
+    .exp__img {
+        max-width: 50px;
+        height: auto;
+        display:block;
+    }
+}
+
+
+
+
 
