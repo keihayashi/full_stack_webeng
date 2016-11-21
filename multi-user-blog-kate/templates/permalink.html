@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <a class="login-link" href="/blog">Back to top page</a>
+  <br><br>
+  {{post.render() | safe}}
+{% endblock %}
