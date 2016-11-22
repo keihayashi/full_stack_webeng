@@ -3,5 +3,5 @@
 {% block content %}
   <a class="login-link" href="/blog">Back to top page</a>
   <br><br>
-  {{post.render() | safe}}
+  {% include "post.html"%}
 {% endblock %}
