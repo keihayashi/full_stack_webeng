@@ -26,4 +26,4 @@ class BlogFront(BlogHandler):
             comment = CommentedPerson.all().order('-created')
             self.render('front.html', posts = posts, comment = comment)
         else:
-            self.redirect('/signup')
+            self.redirect('/login')
