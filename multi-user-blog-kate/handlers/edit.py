@@ -9,7 +9,7 @@ class Edit(BlogHandler):
             key = db.Key.from_path('Post', int(post_id), parent=blog_key())
             post = db.get(key)
 
-            if self.user.name != post.author.name:
+            if self.user.key() != post.author.key():
                 self.error(403)
                 return
             else:

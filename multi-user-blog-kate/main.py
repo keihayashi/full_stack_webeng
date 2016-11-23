@@ -20,7 +20,9 @@ from models.user import User
 from handlers.blogfront import BlogFront
 from handlers.comment import Comment
 from handlers.delete import Delete
+from handlers.deletecomment import DeleteComment
 from handlers.edit import Edit
+from handlers.editcomment import EditComment
 from handlers.like import Like
 from handlers.login import Login
 from handlers.logout import Logout
@@ -41,5 +43,7 @@ app = webapp2.WSGIApplication([
     ('/like', Like),
     ('/delete', Delete),
     ('/edit/([0-9]+)', Edit),
-    ('/comment', Comment)
+    ('/comment', Comment),
+    ('/comment/delete', DeleteComment),
+    ('/comment/edit/([0-9]+)/([0-9]+)', EditComment)
 ], debug=True)

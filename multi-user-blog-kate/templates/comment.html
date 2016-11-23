@@ -1,0 +1,16 @@
+{% if c.post.key().id() == p.key().id() %}
+  <div class="post-content">
+    {{c.content | safe}}
+  </div>
+  {{c.created.strftime("%b %d, %Y") + " commented by " + c.person.name}}
+  {% if user.name == c.person.name %}
+    <div style="display:inline-flex">
+      <form method="post" action="/comment/delete">
+        <input type="hidden" name="post_id" value="{{p.key().id()}}">
+        <input type="hidden" name="comment_id" value="{{c.key().id()}}">
+        <input type="submit" class="submit-button" value="Delete">
+      </form>
+      <a class="login-link" href="/comment/edit/{{p.key().id()}}/{{c.key().id()}}">Edit</a>
+    </div>
+  {% endif %}
+{% endif %}
