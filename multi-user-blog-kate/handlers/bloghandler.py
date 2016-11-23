@@ -16,19 +16,15 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
 
 secret = 'kate'
 
-def render_str(template, **params):
-    t = jinja_env.get_template(template)
-    return t.render(params)
-
-def make_secure_val(val):
-    return '%s|%s' % (val, hmac.new(secret, val).hexdigest())
-
-def check_secure_val(secure_val):
-    val = secure_val.split('|')[0]
-    if secure_val == make_secure_val(val):
-        return val
-
 class BlogHandler(webapp2.RequestHandler):
+    def make_secure_val(self, val):
+        return '%s|%s' % (val, hmac.new(secret, val).hexdigest())
+
+    def check_secure_val(self, secure_val):
+        val = secure_val.split('|')[0]
+        if secure_val == self.make_secure_val(val):
+            return val
+
     def write(self, *a, **kw):
         self.response.out.write(*a, **kw)
 
@@ -38,14 +34,14 @@ class BlogHandler(webapp2.RequestHandler):
         self.write(t.render(params))
 
     def set_secure_cookie(self, name, val):
-        cookie_val = make_secure_val(val)
+        cookie_val = self.make_secure_val(val)
         self.response.headers.add_header(
             'Set-Cookie',
             '%s=%s; Path=/' % (name, cookie_val))
 
     def read_secure_cookie(self, name):
         cookie_val = self.request.cookies.get(name)
-        return cookie_val and check_secure_val(cookie_val)
+        return cookie_val and self.check_secure_val(cookie_val)
 
     def login(self, user):
         self.set_secure_cookie('user_id', str(user.key().id()))
