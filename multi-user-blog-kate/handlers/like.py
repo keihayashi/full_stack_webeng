@@ -4,6 +4,7 @@ from bloghandler import BlogHandler
 from newpost import blog_key
 from models.liked_person import LikedPerson
 
+
 class Like(BlogHandler):
     def post(self):
         post_id = self.request.get('post_id')
@@ -18,7 +19,7 @@ class Like(BlogHandler):
             else:
                 post.liked_num += 1
                 post.put()
-                x = LikedPerson(parent = blog_key(), person = self.user, post = post)
+                x = LikedPerson(parent=blog_key(), person=self.user, post=post)
                 x.put()
             self.redirect('/blog')
         else:

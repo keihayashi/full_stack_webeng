@@ -1,5 +1,7 @@
 from bloghandler import BlogHandler
 from models.user import User
+
+
 # login
 class Login(BlogHandler):
     def get(self):
@@ -15,4 +17,4 @@ class Login(BlogHandler):
             self.redirect('/welcome')
         else:
             msg = 'Invalid login'
-            self.render('login-form.html', error = msg)
+            self.render('login-form.html', error=msg)

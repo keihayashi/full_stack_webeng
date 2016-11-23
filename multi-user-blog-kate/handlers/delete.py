@@ -2,6 +2,8 @@ from google.appengine.ext import db
 
 from bloghandler import BlogHandler
 from newpost import blog_key
+
+
 # delete a post
 class Delete(BlogHandler):
     def post(self):

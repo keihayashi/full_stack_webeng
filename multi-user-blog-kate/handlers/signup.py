@@ -2,6 +2,7 @@ import re
 
 from bloghandler import BlogHandler
 
+
 class Signup(BlogHandler):
     """
     Handler for signup page.
@@ -16,7 +17,7 @@ class Signup(BlogHandler):
         return password and PASS_RE.match(password)
 
     def valid_email(self, email):
-        EMAIL_RE  = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
+        EMAIL_RE = re.compile(r'^[\S]+@[\S]+\.[\S]+$')
         return not email or EMAIL_RE.match(email)
 
     def get(self):
@@ -29,8 +30,8 @@ class Signup(BlogHandler):
         self.verify = self.request.get('verify')
         self.email = self.request.get('email')
 
-        params = dict(username = self.username,
-                      email = self.email)
+        params = dict(username=self.username,
+                      email=self.email)
 
         if not self.valid_username(self.username):
             params['error_username'] = "That's not a valid username."

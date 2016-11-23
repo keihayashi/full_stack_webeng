@@ -11,10 +11,11 @@ import jinja2
 from models.user import User
 
 template_dir = os.path.join(os.path.dirname(__file__), '../templates')
-jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir),
-                               autoescape = True)
+jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
+                               autoescape=True)
 
 secret = 'kate'
+
 
 class BlogHandler(webapp2.RequestHandler):
     def make_secure_val(self, val):
