@@ -35,6 +35,7 @@ body {
     text-decoration: none;
     border-style: none;
     background-color: #fff;
+    padding-top: 0px;
 }
 
 .submit-button:hover {

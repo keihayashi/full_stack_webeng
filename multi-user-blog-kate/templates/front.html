@@ -9,12 +9,15 @@
       <a class="login-link" href="/blog/{{p.key().id()}}">Link</a>
       <br>
       {% if p.author.name == user.name %}
+      <!-- If author of ths post is same with the user logged in,
+        he can see Edit and Delete link. -->
         <a class="login-link" href="/edit/{{p.key().id()}}">Edit</a>
         <form method="post" action="/delete">
           <input type="hidden" name="post_id" value="{{p.key().id()}}">
           <input type="submit" class="submit-button" value="Delete">
         </form>
       {% else %}
+      <!-- If not, he can only see Like link. -->
         <form method="post" action="/like">
           <input type="hidden" name="post_id" value="{{p.key().id()}}">
           <input type="submit" class="submit-button" value="Like">
