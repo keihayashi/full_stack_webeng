@@ -19,6 +19,9 @@ import requests
 
 app = Flask(__name__)
 
+CLIENT_ID = json.loads(
+    open('client_secrets.json', 'r').read())['web']['client_id']
+APPLICATION_NAME = "Catalog Item Application"
 
 #Connect to Database and create database session
 engine = create_engine('sqlite:///categoryitemwithusers.db')
@@ -30,7 +33,10 @@ session = DBSession()
 
 @app.route('/login')
 def showLogin():
-    return "login page"
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                    for x in xrange(32))
+    login_session['state'] = state
+    return render_template('login.html')
 
 
 @app.route('/fbconnect', methods=['POST'])
@@ -62,16 +68,19 @@ def disconnect():
 #JSON APIs to view category Information
 @app.route('/category/JSON')
 def categoryJSON():
-    return "json"
+    categories = session.query(Category).all()
+    return jsonify(categories=[c.serialize for c in categories])
 
 @app.route('/category/<int:category_id>/item/JSON')
 def categoryItemJSON(category_id):
-    return "json"
-
+    category = session.query(Category).filter_by(id = category_id).one()
+    items = session.query(Item).filter_by(category_id = category_id).all()
+    return jsonify(Items=[i.serialize for i in items])
 
 @app.route('/category/<int:category_id>/item/<int:item_id>/JSON')
-def ItemJSON(category_id, item_id):
-    return "json"
+def itemJSON(category_id, item_id):
+    i = session.query(Item).filter_by(id=item_id).one()
+    return jsonify(Item=i.serialize)
 
 #Show all categories
 @app.route('/')
