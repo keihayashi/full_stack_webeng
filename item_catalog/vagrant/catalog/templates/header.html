@@ -1,7 +1,12 @@
-<div class="col-md-6 text-right">
-  {%if 'username' not in session %}
-    <a href="{{url_for('showLogin')}}">Click Here to Login </a>
-  {% else %}
-    <a href="{{url_for('disconnect')}}">Logout </a>
-  {% endif %}
+<div class="header row">
+  <div class="col-xs-8">
+    <h2> Category App </h2>
+  </div>
+  <div class="col-xs-4 text-center">
+    {%if 'username' not in session %}
+      <a href="{{url_for('showLogin')}}"><h4>Login</h4></a>
+    {% else %}
+      <a href="{{url_for('disconnect')}}"><h4>Logout</h4></a>
+    {% endif %}
+  </div>
 </div>

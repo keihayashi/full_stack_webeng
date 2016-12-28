@@ -2,14 +2,14 @@
 {% block content %}
 {% include "header.html" %}
 
-<h1>Edit Item</h1>
+<h3>Edit Item</h3>
 <form action="{{url_for('editItem', category_id=category_id, item_id=item_id)}}" method = "post">
   <label for="name">Name:</label>
   <input type ="text" maxlength="50" class="form-control" name="name" value="{{item.name }}">
 
   <label for="description">Description:</label>
   <textarea class="form-control" maxlength="250" rows="3" name="description">{{item.description}}</textarea>
-
+  </br>
   <button type="submit" id="submit">Create</button>
 </form>
 {% endblock %}

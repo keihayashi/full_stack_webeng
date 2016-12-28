@@ -321,7 +321,7 @@ def deleteCategory(category_id):
         session.commit()
         return redirect(url_for('showCategories'))
     else:
-        return render_template('deleteCategory.html',category=categoryToDelete)
+        return render_template('deleteCategory.html',category=categoryToDelete, category_id=category_id)
 
 
 #Show a category item
