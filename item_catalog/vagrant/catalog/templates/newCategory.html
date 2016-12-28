@@ -1,0 +1,15 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+<h1>New Restaurant</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-1 padding-top">
+    <form action="{{url_for('newCategory')}}" method="post">
+      <label for="name">Name:</label>
+      <input type ="text" class="form-control" maxlength="100" name="name">
+      <button type="submit" id="submit">Create</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
