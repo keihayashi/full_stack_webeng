@@ -3,24 +3,34 @@
 {% include "header.html" %}
 
 <h2>{{ category.name }}</h2>
-<h2>{{ creator.name }}</h2>
+<h3>{{ creator.name }}</h3>
 
-<div class="col-md-11 padding-none">
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li> <strong> {{ message }} </strong> </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<div class="row">
   <a href="{{url_for('editCategory', category_id = category.id )}}">
     Edit Category
   </a>
-  <a href="{{url_for('newItem', category_id = category.id )}}">
-    Add Menu Item
-  </a>
-	<a href="{{url_for('deleteCategory', category_id = category.id )}}">
+  <a href="{{url_for('deleteCategory', category_id = category.id )}}">
     Delete Category
   </a>
+  <a href="{{url_for('newItem', category_id = category.id )}}">
+    Add Item
+  </a>
 </div>
-
+</br>
 {% if items !=[] %}
   {% for i in items %}
-    <h3>{{i.name}}</h3>
-    <p>{{i.description}}</p>
+    <p>{{i.name}}</br>
+      {{i.description}}</p>
     <a href='{{url_for('editItem', category_id=category.id, item_id=i.id ) }}'>Edit</a> |
     <a href='{{url_for('deleteItem', category_id=category.id, item_id=i.id ) }}'>Delete</a>
   {% endfor %}

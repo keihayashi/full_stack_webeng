@@ -5,6 +5,15 @@
 <h2>{{ category.name }}</h2>
 <h2>{{ creator.name }}</h2>
 
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li> <strong> {{ message }} </strong> </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 
 {% if items !=[] %}
   {% for i in items %}
