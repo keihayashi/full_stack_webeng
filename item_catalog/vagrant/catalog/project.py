@@ -1,15 +1,14 @@
 from flask import Flask, render_template, request, redirect,jsonify, url_for, flash
+from functools import wraps
 app = Flask(__name__)
 
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Category, Item, User
 
-#new imports for this step
 from flask import session as login_session
 import random, string
 
-# IMPORTS FOR THIS STEP
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import httplib2
@@ -270,7 +269,18 @@ def itemJSON(category_id, item_id):
     i = session.query(Item).filter_by(id=item_id).one()
     return jsonify(Item=i.serialize)
 
-#Show all categories
+# Refuctor cheking login status
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' in login_session:
+            return f(*args, **kwargs)
+        else:
+            flash("You need to login to do access there.")
+            return redirect('/login')
+    return decorated_function
+
+# Show all categories
 @app.route('/')
 @app.route('/category/')
 def showCategories():
@@ -282,9 +292,8 @@ def showCategories():
 
 #Create a new category
 @app.route('/category/new/', methods=['GET','POST'])
+@login_required
 def newCategory():
-    if 'username' not in login_session:
-        return redirect('/login')
     if request.method == 'POST':
         newcategory = Category(
             name = request.form['name'], user_id=login_session['user_id'])
@@ -297,10 +306,9 @@ def newCategory():
 
 #Edit a category
 @app.route('/category/<int:category_id>/edit/', methods = ['GET', 'POST'])
+@login_required
 def editCategory(category_id):
     editedcategory = session.query(Category).filter_by(id=category_id).one()
-    if 'username' not in login_session:
-        return redirect('/login')
     if request.method == 'POST':
         if request.form['name']:
             editedcategory.name = request.form['name']
@@ -311,10 +319,9 @@ def editCategory(category_id):
 
 #Delete a category
 @app.route('/category/<int:category_id>/delete/', methods = ['GET','POST'])
+@login_required
 def deleteCategory(category_id):
     categoryToDelete = session.query(Category).filter_by(id=category_id).one()
-    if 'username' not in login_session:
-          return redirect('/login')
     if request.method == 'POST':
         session.delete(categoryToDelete)
         flash('%s Successfully Deleted' % categoryToDelete.name)
@@ -338,9 +345,8 @@ def showItem(category_id):
 
 #Create a new item
 @app.route('/category/<int:category_id>/item/new/',methods=['GET','POST'])
+@login_required
 def newItem(category_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     category = session.query(Category).filter_by(id = category_id).one()
     if request.method == 'POST':
         new_item = Item(name=request.form['name'], description=request.form['description'], category_id=category_id, user_id=category.user_id)
@@ -353,9 +359,8 @@ def newItem(category_id):
 
 #Edit a item
 @app.route('/category/<int:category_id>/item/<int:item_id>/edit', methods=['GET','POST'])
+@login_required
 def editItem(category_id, item_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     editedItem = session.query(Item).filter_by(id=item_id).one()
     category = session.query(Category).filter_by(id=category_id).one()
     if request.method == 'POST':
@@ -373,9 +378,8 @@ def editItem(category_id, item_id):
 
 #Delete a item
 @app.route('/category/<int:category_id>/item/<int:item_id>/delete', methods = ['GET','POST'])
+@login_required
 def deleteItem(category_id, item_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     category = session.query(Category).filter_by(id=category_id).one()
     itemToDelete = session.query(Item).filter_by(id=item_id).one()
     if request.method == 'POST':
