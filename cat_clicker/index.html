@@ -6,13 +6,20 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <form id="form-container">
-    <button class="cat-button"><img class="cat-img" alt="cat1" src="img/cat1.jpg"></button>
-    <label for="street">Name: </label><input type="text" value="">
-    <button class="cat-button"><img class="cat-img" alt="cat2" src="img/cat2.jpg"></button>
-    <label for="street">Name: </label><input type="text" value="">
-    <h3 id="click-num">Start click cats!</h3>
-  </form>
+  <h3>Select favorite cat from below:</h3>
+  <input type="radio" name="cat-select" value="1" checked> Alice<br>
+  <input type="radio" name="cat-select" value="2"> Bob<br>
+  <input type="radio" name="cat-select" value="3"> Cathey<br>
+  <input type="radio" name="cat-select" value="4"> Dick<br>
+  <input type="radio" name="cat-select" value="5"> Edward<br>
+  <button id="submit-btn">Submit</button>
+ <br><br>
+
+  <button id="cat-button"><img class="cat-img" alt="cat1" src="img/cat1.jpg"></button>
+  <br>
+  <label>Name: </label><h4 id="cat-name">Alice</h3>
+  <label>Times you clicked this cat: </label><h3 id="click-num">Start click the cat!</h3>
+
   <script src="js/libs/jquery.min.js"></script>
   <script src="js/script.js"></script>
 </body>
