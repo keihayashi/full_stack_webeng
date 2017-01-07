@@ -40,6 +40,23 @@ $(function() {
     init: function() {
       view_select.init();
       view_click.init();
+      view_admin.init();
+    }
+  };
+
+  var view_admin = {
+    init: function() {
+      document.getElementById("set-value").style.display="none";
+      var admin = $("#admin");
+      admin.click(function() {
+        if (admin.value == false) {
+          admin.value = true;
+          document.getElementById("set-value").style.display="none";
+        } else {
+          admin.value = false;
+          document.getElementById("set-value").style.display="block";
+        }
+      });
     }
   };
 
