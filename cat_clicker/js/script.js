@@ -1,31 +1,41 @@
 
 $(function() {
-  var model = [
-    {
-      "name" : "Alice",
-      "click" : 0
-    }, {
-      "name" : "Bob",
-      "click" : 0
-    }, {
-      "name" : "Cathey",
-      "click" : 0
-    }, {
-      "name" : "Dick",
-      "click" : 0
-    }, {
-      "name" : "Edward",
-      "click" : 0
-    }
-  ];
+  var model = {
+    currentCat: 1,
+    cats: [
+      {
+        "name" : "Alice",
+        "click" : 0
+      }, {
+        "name" : "Bob",
+        "click" : 0
+      }, {
+        "name" : "Cathey",
+        "click" : 0
+      }, {
+        "name" : "Dick",
+        "click" : 0
+      }, {
+        "name" : "Edward",
+        "click" : 0
+      }
+    ]
+  };
 
   var octopus = {
-    addClick: function(cur) {
-      model[cur - 1].click += 1;
-      view_click.render(cur);
+    getModelCurrent: function() {
+      return model.currentCat;
     },
-    selectCat: function(cur) {
-      view_select.render(cur);
+    getCurrentCat: function() {
+      return model.cats[model.currentCat - 1];
+    },
+    setCurrentCat: function(cur) {
+        model.currentCat = cur;
+        view_select.render();
+    },
+    addClick: function() {
+      model.cats[model.currentCat - 1].click += 1;
+      view_click.render();
     },
     init: function() {
       view_select.init();
@@ -38,14 +48,15 @@ $(function() {
       var selectBtn = $('#submit-btn');
       selectBtn.click(function() {
           var cur = $('input[name=cat-select]:checked').val();
-          octopus.selectCat(cur);
+          octopus.setCurrentCat(cur);
       });
     },
-    render: function(cur) {
+    render: function() {
+      var cur = octopus.getModelCurrent();
       var picture = "img/cat" + cur + ".jpg";
       $(".cat-img").attr("src", picture);
-      $('#cat-name').text(model[cur - 1].name);
-      $('#click-num').text(model[cur - 1].click);
+      $('#cat-name').text(octopus.getCurrentCat().name);
+      $('#click-num').text(octopus.getCurrentCat().click);
     }
   };
 
@@ -53,12 +64,11 @@ $(function() {
     init: function() {
       var clickCat = $('#cat-button');
       clickCat.click(function() {
-        var cur = $('input[name=cat-select]:checked').val();
-        octopus.addClick(cur);
+        octopus.addClick();
       });
     },
-    render: function(cur) {
-      $('#click-num').text(model[cur - 1].click);
+    render: function() {
+      $('#click-num').text(octopus.getCurrentCat().click);
     }
   };
 
