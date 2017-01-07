@@ -30,11 +30,11 @@ $(function() {
       return model.cats[model.currentCat - 1];
     },
     setCurrentCat: function(cur) {
-        model.currentCat = cur;
-        view_select.render();
+      model.currentCat = cur;
+      view_select.render();
     },
     addClick: function() {
-      model.cats[model.currentCat - 1].click += 1;
+      this.getCurrentCat().click += 1;
       view_click.render();
     },
     init: function() {
@@ -45,8 +45,8 @@ $(function() {
 
   var view_select = {
     init: function() {
-      var selectBtn = $('#submit-btn');
-      selectBtn.click(function() {
+      var selectBtn = $('input[name=cat-select]:radio');
+      selectBtn.change(function() {
           var cur = $('input[name=cat-select]:checked').val();
           octopus.setCurrentCat(cur);
       });
