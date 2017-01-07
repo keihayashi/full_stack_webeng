@@ -23,6 +23,9 @@ $(function() {
   };
 
   var octopus = {
+    allCats: function() {
+      return model.cats;
+    },
     getModelCurrent: function() {
       return model.currentCat;
     },
@@ -41,6 +44,22 @@ $(function() {
       view_select.init();
       view_click.init();
       view_admin.init();
+    },
+    changeValue: function() {
+      if ($("#new-name").val() != "") {
+        this.getCurrentCat().name = $("#new-name").val();
+        view_select.init();
+      };
+      if ($("#new-num").val() != "") {
+        this.getCurrentCat().click = $("#new-num").val();
+        view_click.render();
+      };
+      view_admin.init()
+    },
+    cancelValue: function() {
+      $("#new-name").attr("value", "");
+      $("#new-num").attr("value", "");
+      view_admin.init()
     }
   };
 
@@ -55,6 +74,12 @@ $(function() {
         } else {
           admin.value = false;
           document.getElementById("set-value").style.display="block";
+          $("#save").click(function() {
+            octopus.changeValue();
+          });
+          $("#cancel").click(function() {
+            octopus.cancelValue();
+          });
         }
       });
     }
@@ -62,6 +87,9 @@ $(function() {
 
   var view_select = {
     init: function() {
+      for (i = 1; i <= 5; i++) {
+        $("label[for=radio-" + i + "]").html(octopus.allCats()[i - 1].name);
+      }
       var selectBtn = $('input[name=cat-select]:radio');
       selectBtn.change(function() {
           var cur = $('input[name=cat-select]:checked').val();
