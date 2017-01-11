@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Neighborhood Map</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- filter search :<input data-bind='value: prefix, valueUpdate: "afterkeydown"'/> -->
+  <ul data-bind="foreach: places">
+    <li data-bind="text: $data"></li>
+  </ul>
+  <div>Google Map</div>
+
+  <script src="js/libs/jquery.min.js"></script>
+  <script src="js/libs/knockout-3.4.1.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
