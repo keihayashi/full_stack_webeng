@@ -9,20 +9,19 @@ var initialPlaces = [
   'Christopher Elbow Chocolates'
 ];
 
-var ViewModel = function(prefix) {
+var ViewModel = function() {
   var self = this;
-  this.prefix = ko.observable(prefix);
+
+  this._prefix = ko.observable('');
+  // in case the initialPlaces changes
   this.places = ko.observableArray(initialPlaces);
-  // if (this.prefix() != "") {
-  //   this.places = ko.observableArray([]);
-  //   for (i in initialPlaces) {
-  //     if (initialPlaces[i].indexOf(this.prefix()) != 0) {
-  //       this.places.push(initialPlaces[i]);
-  //     }
-  //   };
-  // } else {
-  //   this.places = ko.observableArray(initialPlaces);
-  // }
+
+  this.filteredPlaces = ko.computed(function() {
+    var search = self._prefix().toLowerCase();
+    return ko.utils.arrayFilter(self.places(), function($data) {
+      return $data.toLowerCase().indexOf(search) == 0;
+    });
+  });
 };
 
 ko.applyBindings(new ViewModel());

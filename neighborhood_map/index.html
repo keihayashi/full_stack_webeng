@@ -6,14 +6,16 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- filter search :<input data-bind='value: prefix, valueUpdate: "afterkeydown"'/> -->
-  <ul data-bind="foreach: places">
-    <li data-bind="text: $data"></li>
-  </ul>
-  <div>Google Map</div>
+  <form action="#">
+    filter search :<input type="search" data-bind='value: _prefix, valueUpdate: "afterkeydown"' autocomplete="off"/>
+    <ul data-bind="foreach: filteredPlaces">
+      <li data-bind="text: $data"></li>
+    </ul>
+    <div>Google Map</div>
+  </form>
 
-  <script src="js/libs/jquery.min.js"></script>
   <script src="js/libs/knockout-3.4.1.js"></script>
+  <!-- <script src="js/libs/jquery.min.js"></script> -->
   <script src="js/script.js"></script>
 </body>
 </html>
