@@ -9,13 +9,16 @@
   <form action="#">
     filter search :<input type="search" data-bind='value: _prefix, valueUpdate: "afterkeydown"' autocomplete="off"/>
     <ul data-bind="foreach: filteredPlaces">
-      <li data-bind="text: $data"></li>
+      <li data-bind="text: name"></li>
     </ul>
-    <div>Google Map</div>
   </form>
+  <div id="mapDiv">
+    <h3>Locations Map</h3>
+    <div id="map"><div>
+  </div>
 
   <script src="js/libs/knockout-3.4.1.js"></script>
-  <!-- <script src="js/libs/jquery.min.js"></script> -->
+  <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyD2tX8c9h2elwK8K6Ky9mPunyU98a1Malk"></script>
   <script src="js/script.js"></script>
 </body>
 </html>
