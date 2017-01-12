@@ -12,15 +12,42 @@ var initialPlaces = [
 var ViewModel = function() {
   var self = this;
 
+  // set up google map
+  this.googleMap = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 37.761, lng: -122.412},
+    zoom: 12
+  });
+
   this._prefix = ko.observable('');
   // in case the initialPlaces changes
   this.places = ko.observableArray(initialPlaces);
+  // create markers
+  this.places().forEach(function(place) {
+    var latLng = new google.maps.LatLng(place.latLng.lat, place.latLng.lng);
+    var markerOptions = {
+      map: self.googleMap,
+      position: latLng,
+      animation: google.maps.Animation.DROP,
+    };
+    place.marker = new google.maps.Marker(markerOptions);
+  });
+
 
   this.filteredPlaces = ko.computed(function() {
     var search = self._prefix().toLowerCase();
     return ko.utils.arrayFilter(self.places(), function($data) {
-      return $data.name.toLowerCase().indexOf(search) == 0;
-    });
+      return $data.name.toLowerCase().indexOf(search) >= 0;
+    }, this);
+  });
+
+  this.filteredPlaces.subscribe(function() {
+    for (var l in self.places()) {
+      self.places()[l].marker.setMap(null);
+    }
+    var placeToShow = self.filteredPlaces();
+    for (var l in placeToShow) {
+      placeToShow[l].marker.setMap(self.googleMap);
+    }
   });
 };
 
