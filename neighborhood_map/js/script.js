@@ -29,9 +29,15 @@ var ViewModel = function() {
       position: latLng,
       animation: google.maps.Animation.DROP,
     };
+    var infowindow = new google.maps.InfoWindow({content: place.name});
     place.marker = new google.maps.Marker(markerOptions);
+    place.marker.addListener('click', function() {
+      infowindow.open(self.googleMap, place.marker);
+    });
+    place.getMarker = function() {
+      infowindow.open(self.googleMap, place.marker);
+    };
   });
-
 
   this.filteredPlaces = ko.computed(function() {
     var search = self._prefix().toLowerCase();
