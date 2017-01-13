@@ -9,6 +9,12 @@ var initialPlaces = [
   {name: 'Christopher Elbow Chocolates', latLng: {lat: '37.776703', lng: '-122.423125'}}
 ]
 
+var FoursquareAPIController = function() {
+	this.client_id = 'YOUR_CLIENT_ID';
+	this.secret_id = 'YOUR_SECRET_ID';
+	this.localSearch();
+};
+
 var ViewModel = function() {
   var self = this;
 
@@ -29,6 +35,12 @@ var ViewModel = function() {
       position: latLng,
       animation: google.maps.Animation.DROP,
     };
+
+    var url = "https://api.foursquare.com/v2/venues/search?&limit=3&v=20170112&client_id=" +
+              this.client_id + "&client_secret=" + this.client_secret +
+              "&ll=" + place.latLng.lat + "," + place.latLng.lng
+              + "&query=" + place.name;
+
     var infowindow = new google.maps.InfoWindow({content: place.name});
     place.marker = new google.maps.Marker(markerOptions);
     place.marker.addListener('click', function() {
