@@ -15,7 +15,7 @@ var ViewModel = function() {
   // set up google map
   this.googleMap = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 37.761, lng: -122.412},
-    zoom: 12
+    zoom: 13
   });
 
   this._prefix = ko.observable('');
@@ -48,19 +48,20 @@ var ViewModel = function() {
           };
       };
       contentString += "</div>";
-      console.log(contentString);
+      // console.log(contentString);
+      var infowindow = new google.maps.InfoWindow({content: contentString});
+      place.marker = new google.maps.Marker(markerOptions);
+      place.marker.addListener('click', function() {
+        infowindow.open(self.googleMap, place.marker);
+      });
+      place.infowindow = infowindow;
     }).error(function(e){
         contentString += 'Foursquare URLs Could Not Be Loaded';
     });
 
-    console.log(contentString);
-    var infowindow = new google.maps.InfoWindow({content: contentString});
-    place.marker = new google.maps.Marker(markerOptions);
-    place.marker.addListener('click', function() {
-      infowindow.open(self.googleMap, place.marker);
-    });
-    place.getMarker = function() {
-      infowindow.open(self.googleMap, place.marker);
+    place.getMarker = function(data) {
+      // console.log(data);
+      data.infowindow.open(self.googleMap, data.marker);
     };
   });
 
