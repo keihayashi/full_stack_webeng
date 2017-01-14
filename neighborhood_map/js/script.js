@@ -9,12 +9,6 @@ var initialPlaces = [
   {name: 'Christopher Elbow Chocolates', latLng: {lat: '37.776703', lng: '-122.423125'}}
 ]
 
-var FoursquareAPIController = function() {
-	this.client_id = 'YOUR_CLIENT_ID';
-	this.secret_id = 'YOUR_SECRET_ID';
-	this.localSearch();
-};
-
 var ViewModel = function() {
   var self = this;
 
@@ -36,12 +30,31 @@ var ViewModel = function() {
       animation: google.maps.Animation.DROP,
     };
 
-    var url = "https://api.foursquare.com/v2/venues/search?&limit=3&v=20170112&client_id=" +
+    this.client_id = 'YOUR_CLIENT_ID';
+    this.client_secret = 'YOUR_CLIENT_SECRET';
+
+    var url = "https://api.foursquare.com/v2/tips/search?&limit=3&v=20170112&client_id=" +
               this.client_id + "&client_secret=" + this.client_secret +
               "&ll=" + place.latLng.lat + "," + place.latLng.lng
               + "&query=" + place.name;
 
-    var infowindow = new google.maps.InfoWindow({content: place.name});
+    var contentString = "<div><h3>"+place.name+"</h3>"
+    $.getJSON(url, function(data){
+      tipsList = data.response.tips;
+      for (var i = 0; i < tipsList.length; i++) {
+          var t = tipsList[i];
+          if (t.text) {
+            contentString += t.text + '</br>';
+          };
+      };
+      contentString += "</div>";
+      console.log(contentString);
+    }).error(function(e){
+        contentString += 'Foursquare URLs Could Not Be Loaded';
+    });
+
+    console.log(contentString);
+    var infowindow = new google.maps.InfoWindow({content: contentString});
     place.marker = new google.maps.Marker(markerOptions);
     place.marker.addListener('click', function() {
       infowindow.open(self.googleMap, place.marker);
