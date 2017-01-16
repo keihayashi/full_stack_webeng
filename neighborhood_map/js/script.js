@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var initialPlaces = [
   {name: 'Recchiuti Confections', latLng: {lat:'37.795547', lng: '-122.393421'}},
@@ -11,14 +11,20 @@ var initialPlaces = [
   {name: 'Christopher Elbow Chocolates', latLng: {lat: '37.776703', lng: '-122.423125'}}
 ];
 
-var ViewModel = function() {
-  var self = this;
+var googleMap;
+var infowindow;
 
-  // set up google map
-  this.googleMap = new google.maps.Map(document.getElementById('map'), {
+function initMap() {
+  googleMap = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 37.761, lng: -122.412},
     zoom: 13
   });
+  infowindow = new google.maps.InfoWindow();
+  ko.applyBindings(new ViewModel());
+}
+
+var ViewModel = function() {
+  var self = this;
 
   this.prefix = ko.observable('');
   // in case the initialPlaces changes
@@ -30,41 +36,42 @@ var ViewModel = function() {
   this.places().forEach(function(place) {
     var latLng = new google.maps.LatLng(place.latLng.lat, place.latLng.lng);
     var markerOptions = {
-      map: self.googleMap,
+      map: googleMap,
       position: latLng,
       animation: google.maps.Animation.DROP,
     };
 
     var url = "https://api.foursquare.com/v2/tips/search?&limit=3&v=20170112&client_id=" +
               self.client_id + "&client_secret=" + self.client_secret +
-              "&ll=" + place.latLng.lat + "," + place.latLng.lng
-              + "&query=" + place.name;
+              "&ll=" + place.latLng.lat + "," + place.latLng.lng +
+              "&query=" + place.name;
 
-    var contentString = "<div><h3>"+place.name+"</h3>";
+    place.contentString = "<div><h4>"+place.name+"</h4><h5>tips provided by foursquare:</h5>";
 
     $.getJSON(url, function(data) {
       var tipsList = data.response.tips;
       for (var i = 0; i < tipsList.length; i++) {
           var t = tipsList[i];
           if (t.text) {
-            contentString += t.text + '</br>';
-          };
-      };
-      contentString += "</div>";
+            place.contentString += t.text + '</br>';
+          }
+      }
+      place.contentString += "</div>";
     }).fail(function(e){
-      contentString += 'Foursquare URLs Could Not Be Loaded';
+      place.contentString += 'Foursquare URLs Could Not Be Loaded';
     }).always(function () {
-      var infowindow = new google.maps.InfoWindow({content: contentString});
       place.marker = new google.maps.Marker(markerOptions);
       place.marker.addListener('click', function() {
-        infowindow.open(self.googleMap, place.marker);
+        place.marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function(){ place.marker.setAnimation(null); }, 750);
+        infowindow.setContent(place.contentString);
+        infowindow.open(googleMap, place.marker);
       });
       place.infowindow = infowindow;
     });
 
     place.getMarker = function(data) {
-      // console.log(data);
-      data.infowindow.open(self.googleMap, data.marker);
+      data.infowindow.open(googleMap, data.marker);
     };
   });
 
@@ -80,10 +87,8 @@ var ViewModel = function() {
       self.places()[l].marker.setMap(null);
     }
     var placeToShow = self.filteredPlaces();
-    for (var l in placeToShow) {
-      placeToShow[l].marker.setMap(self.googleMap);
+    for (var s in placeToShow) {
+      placeToShow[s].marker.setMap(googleMap);
     }
   });
 };
-
-ko.applyBindings(new ViewModel());
