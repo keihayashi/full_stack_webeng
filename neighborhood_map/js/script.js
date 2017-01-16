@@ -1,3 +1,5 @@
+'use strict';
+
 var initialPlaces = [
   {name: 'Recchiuti Confections', latLng: {lat:'37.795547', lng: '-122.393421'}},
   {name: 'Dandelion Chocolate', latLng: {lat: '37.761025', lng: '-122.421782'}},
@@ -7,7 +9,7 @@ var initialPlaces = [
   {name: 'Sixth Course', latLng: {lat: '37.766967', lng: '-122.418802'}},
   {name: 'Feve Artisan Chocolatier', latLng: {lat: '37.727083', lng: '-122.390954'}},
   {name: 'Christopher Elbow Chocolates', latLng: {lat: '37.776703', lng: '-122.423125'}}
-]
+];
 
 var ViewModel = function() {
   var self = this;
@@ -18,9 +20,12 @@ var ViewModel = function() {
     zoom: 13
   });
 
-  this._prefix = ko.observable('');
+  this.prefix = ko.observable('');
   // in case the initialPlaces changes
   this.places = ko.observableArray(initialPlaces);
+
+  this.client_id = 'YOUR_CLIENT_ID';
+  this.client_secret = 'YOUR_CLIENT_SECRET';
   // create markers
   this.places().forEach(function(place) {
     var latLng = new google.maps.LatLng(place.latLng.lat, place.latLng.lng);
@@ -30,17 +35,15 @@ var ViewModel = function() {
       animation: google.maps.Animation.DROP,
     };
 
-    this.client_id = 'YOUR_CLIENT_ID';
-    this.client_secret = 'YOUR_CLIENT_SECRET';
-
     var url = "https://api.foursquare.com/v2/tips/search?&limit=3&v=20170112&client_id=" +
-              this.client_id + "&client_secret=" + this.client_secret +
+              self.client_id + "&client_secret=" + self.client_secret +
               "&ll=" + place.latLng.lat + "," + place.latLng.lng
               + "&query=" + place.name;
 
-    var contentString = "<div><h3>"+place.name+"</h3>"
-    $.getJSON(url, function(data){
-      tipsList = data.response.tips;
+    var contentString = "<div><h3>"+place.name+"</h3>";
+
+    $.getJSON(url, function(data) {
+      var tipsList = data.response.tips;
       for (var i = 0; i < tipsList.length; i++) {
           var t = tipsList[i];
           if (t.text) {
@@ -48,15 +51,15 @@ var ViewModel = function() {
           };
       };
       contentString += "</div>";
-      // console.log(contentString);
+    }).fail(function(e){
+      contentString += 'Foursquare URLs Could Not Be Loaded';
+    }).always(function () {
       var infowindow = new google.maps.InfoWindow({content: contentString});
       place.marker = new google.maps.Marker(markerOptions);
       place.marker.addListener('click', function() {
         infowindow.open(self.googleMap, place.marker);
       });
       place.infowindow = infowindow;
-    }).error(function(e){
-        contentString += 'Foursquare URLs Could Not Be Loaded';
     });
 
     place.getMarker = function(data) {
@@ -66,7 +69,7 @@ var ViewModel = function() {
   });
 
   this.filteredPlaces = ko.computed(function() {
-    var search = self._prefix().toLowerCase();
+    var search = self.prefix().toLowerCase();
     return ko.utils.arrayFilter(self.places(), function($data) {
       return $data.name.toLowerCase().indexOf(search) >= 0;
     }, this);

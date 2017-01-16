@@ -3,18 +3,19 @@
 <head>
   <meta charset="utf-8">
   <title>Neighborhood Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <form action="#">
-    filter search :<input type="search" data-bind='value: _prefix, valueUpdate: "afterkeydown"' autocomplete="off"/>
+    filter search :<input type="search" data-bind='value: prefix, valueUpdate: "afterkeydown"' autocomplete="off"/>
     <ul data-bind="foreach: filteredPlaces">
       <li data-bind="text: name, click: getMarker"></li>
     </ul>
   </form>
-  <div id="mapDiv">
+  <div id="mapDiv" class="mapDiv">
     <h3>Locations Map</h3>
-    <div id="map" data-bind="googlemap: googleMap"><div>
+    <div id="map" class="map-canvas"></div>
   </div>
 
   <script src="js/libs/knockout-3.4.1.js"></script>
