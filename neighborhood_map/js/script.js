@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var initialPlaces = [
   {name: 'Recchiuti Confections', latLng: {lat:'37.795547', lng: '-122.393421'}},
@@ -21,6 +21,10 @@ function initMap() {
   });
   infowindow = new google.maps.InfoWindow();
   ko.applyBindings(new ViewModel());
+}
+
+function ErrorHandling() {
+  alert('Map could not be loaded.');
 }
 
 var ViewModel = function() {
@@ -49,21 +53,25 @@ var ViewModel = function() {
     place.contentString = "<div><h4>"+place.name+"</h4><h5>tips provided by foursquare:</h5>";
 
     $.getJSON(url, function(data) {
-      var tipsList = data.response.tips;
-      for (var i = 0; i < tipsList.length; i++) {
-          var t = tipsList[i];
-          if (t.text) {
-            place.contentString += t.text + '</br>';
-          }
+      if (data.response && data.response.tips) {
+        var tipsList = data.response.tips;
+        for (var i = 0; i < tipsList.length; i++) {
+            var t = tipsList[i];
+            if (t.text) {
+              place.contentString += t.text + '</br>';
+            }
+        }
+        place.contentString += "</div>";
+      } else {
+        place.contentString = "Tips are not avaialble";
       }
-      place.contentString += "</div>";
     }).fail(function(e){
       place.contentString += 'Foursquare URLs Could Not Be Loaded';
     }).always(function () {
       place.marker = new google.maps.Marker(markerOptions);
       place.marker.addListener('click', function() {
         place.marker.setAnimation(google.maps.Animation.BOUNCE);
-        setTimeout(function(){ place.marker.setAnimation(null); }, 750);
+        setTimeout(function(){ place.marker.setAnimation(null); }, 700);
         infowindow.setContent(place.contentString);
         infowindow.open(googleMap, place.marker);
       });
@@ -71,7 +79,7 @@ var ViewModel = function() {
     });
 
     place.getMarker = function(data) {
-      data.infowindow.open(googleMap, data.marker);
+      google.maps.event.trigger(data.marker, 'click');
     };
   });
 
@@ -84,11 +92,12 @@ var ViewModel = function() {
 
   this.filteredPlaces.subscribe(function() {
     for (var l in self.places()) {
-      self.places()[l].marker.setMap(null);
+      self.places()[l].marker.setVisible(false);
+      infowindow.close();
     }
     var placeToShow = self.filteredPlaces();
     for (var s in placeToShow) {
-      placeToShow[s].marker.setMap(googleMap);
+      placeToShow[s].marker.setVisible(true);
     }
   });
 };

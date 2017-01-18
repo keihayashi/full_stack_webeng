@@ -7,20 +7,24 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <form action="#">
-    filter search :<input type="search" data-bind='value: prefix, valueUpdate: "afterkeydown"' autocomplete="off"/>
-    <ul data-bind="foreach: filteredPlaces">
-      <li data-bind="text: name, click: getMarker"></li>
-    </ul>
-  </form>
-  <div id="mapDiv" class="mapDiv">
-    <h3>Locations Map</h3>
-    <div id="map" class="map-canvas"></div>
-  </div>
+  <aside>
+    <form action="#">
+      filter search :<input type="search" data-bind='value: prefix, valueUpdate: "afterkeydown"' autocomplete="off"/>
+      <ul data-bind="foreach: filteredPlaces">
+        <li data-bind="text: name, click: getMarker"></li>
+      </ul>
+    </form>
+  </aside>
+  <main>
+    <div id="mapDiv" class="map-div">
+      <h3>Locations Map</h3>
+      <div id="map" class="map-canvas"></div>
+    </div>
+  </main>
 
   <script src="js/libs/knockout-3.4.1.js"></script>
   <script src="js/libs/jquery.min.js"></script>
-  <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyD2tX8c9h2elwK8K6Ky9mPunyU98a1Malk&callback=initMap" async defer></script>
   <script src="js/script.js"></script>
+  <script src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyD2tX8c9h2elwK8K6Ky9mPunyU98a1Malk&callback=initMap" async defer onerror="ErrorHandling()"></script>
 </body>
 </html>
